@@ -27,7 +27,6 @@ int main() {
 
     }
 
-    printf("Broj redaka je: %d", count);
 
     return 0;
 }
