@@ -52,9 +52,11 @@ int main() {
         fscanf(fo, "%s %s %d", stud[i].ime, stud[i].prezime, &stud[i].bodovi);
     }
     
+    
+    //ispis podataka iz strukture
     for (int i = 0; i < count; i++)
     {
-        printf("%s %s: %d\n", stud[i].ime, stud[i].prezime, stud[i].bodovi);
+        printf("%s %s: %d\nRelativan broj bodova: % .2f%%\n", stud[i].ime, stud[i].prezime, stud[i].bodovi, (float) stud[i].bodovi/50 * 100);
     }
     
     return 0;
