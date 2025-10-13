@@ -1,63 +1,79 @@
 #include <stdio.h>
-#include<stdlib.h>
+#include <stdlib.h>
 
-typedef struct{
-    
+typedef struct {
     char ime[20];
     char prezime[50];
     int bodovi;
+} Student;
 
-}student;
+//Funkcija za brojanje redaka
+int rowCounter(FILE *fo) {
+    int count = 0;
+    char c;
 
+    //Petlja za brojanje redaka
+    while ((c = getc(fo)) != EOF) {
 
+        if (c == '\n')
+            count++;
+
+    }
+
+    rewind(fo); //Vracanje pokazivaca na pocetak datoteke
+
+    return count;
+}
+
+//Funkcija za ucitavanje dinamickog niza
+Student* loadStudent(FILE *fo, int count) {
+
+    Student *stud = (Student*) malloc(sizeof(Student) * count);
+
+    //Ucitavanje studenata u strukturu
+    for (int i = 0; i < count; i++) {
+        fscanf(fo, "%s %s %d", stud[i].ime, stud[i].prezime, &stud[i].bodovi);
+    }
+
+    return stud;
+}
+
+//Funkcija za ispis svih studenata + relativni bodovi
+void printStudent(Student *stud, int count, int max) {
+
+    for (int i = 0; i < count; i++) {
+
+        float rel = (float)stud[i].bodovi / max * 100;
+
+        printf("Ime i prezime: %s %s\n", stud[i].ime, stud[i].prezime);
+        printf("Broj bodova: %d\n", stud[i].bodovi);
+        printf("Relativan broj bodova: %.2f%%\n\n", rel);
+
+    }
+}
+
+//Funkcija za trazenje maksimalnog broja bodova
+int findMax(Student *stud, int count) {
+
+    int max = stud[0].bodovi;
+    for (int i = 1; i < count; i++) {
+        if (stud[i].bodovi > max)
+            max = stud[i].bodovi;
+    }
+
+    return max;
+}
 
 int main() {
 
-    FILE *fo; //pokazivac za otvaranje datoteke
+    FILE *fo = fopen("student.txt", "r");
 
-    student *stud; //pokazivac na strukturu
+    int count = rowCounter(fo);
+    Student *stud = loadStudent(fo, count);
 
-    int count = 0; //varijabla brojaca
+    int max = findMax(stud, count);
 
-    char c; //trenutni character
+    printStudent(stud, count, max);
 
-    fo = fopen("student.txt", "r");
-
-    if(fo == NULL){
-
-        printf("Datoteka se ne moze otvoriti!");
-
-    }
-
-    //for petlja za brojanje svih redaka u datoteci
-    for(; (c = getc(fo)) != EOF;){
-
-        if(c == '\n'){
-
-            count++;
-
-        }
-
-    }
-
-    //vracanje na pocetak datoteke da bi mogli ponovo krenuti od pocetka u for petlji
-    rewind(fo);
-
-    //dinamicka alokacija za niz struktura
-    stud = (student *)malloc(sizeof(student) * count);
-
-    //ucitavanje podataka iz datoteke
-    for (int i = 0; i < count; i++)
-    {
-        fscanf(fo, "%s %s %d", stud[i].ime, stud[i].prezime, &stud[i].bodovi);
-    }
-    
-    
-    //ispis podataka iz strukture
-    for (int i = 0; i < count; i++)
-    {
-        printf("Ime i prezime: %s %s\nBroj bodova: %d\nRelativan broj bodova: %.2f%%\n", stud[i].ime, stud[i].prezime, stud[i].bodovi, (float) stud[i].bodovi/50 * 100);
-    }
-    
     return 0;
 }
