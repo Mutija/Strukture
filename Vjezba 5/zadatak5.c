@@ -87,7 +87,7 @@ int printStack(Position head) {
 }
 
 
-// FUNKCIJA ZA IZRAcUNAVANJE POSTFIKSNOG IZRAZA
+// FUNKCIJA ZA IZRACUNAVANJE POSTFIKSNOG IZRAZA
 
 double evaluatePostfix(const char* filename) {
     FILE* file = openFile(filename, "r");  // Otvara datoteku s izrazom
@@ -139,3 +139,4 @@ double evaluatePostfix(const char* filename) {
     double finalResult = pop(&head);
     return finalResult;
 }
+
