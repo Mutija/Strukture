@@ -21,7 +21,7 @@ int mulPoly(poly *, poly *, poly *);       // množenje
 void freePoly(poly *);                     // dealokacija liste
 
 
-int main(void)
+int main()
 {
     // Glave lista
     poly head1 = {0, 0, NULL};
@@ -43,7 +43,7 @@ int main(void)
     // Ispis polinoma
     poly *ptr;
 
-    printf("%-12s", "POLINOM 1:");
+    printf("%12s", "POLINOM 1:");
     for (ptr = head1.nxt; ptr != NULL; ptr = ptr->nxt)
     {
         printf("%dx^%d", ptr->coef, ptr->exp);
@@ -86,7 +86,7 @@ int main(void)
 /*
     insertSorted(coef, exp, head)
 
-    — Ubacuje novi clan polinoma U SORTIRANI poredak
+    — Ubacuje novi clan polinoma u SORTIRANI poredak
     — Sortira silazno po eksponentu (najveci exponent prvi)
     — Ako vec postoji clan s istim eksponentom -> koeficijenti se zbrajaju
 */
