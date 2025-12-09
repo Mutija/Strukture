@@ -165,6 +165,11 @@ void clear(Bill *head)
     }
 }
 
+void toLowerStr(char *s) {
+    for (int i = 0; s[i]; i++)
+        s[i] = tolower((unsigned char)s[i]);
+}
+
 void queryProduct(Bill *head)
 {
     char wantedName[MAX_NAME];
@@ -184,19 +189,29 @@ void queryProduct(Bill *head)
     double totalMoney = 0.0;
 
     Bill *b = head;
+
+    //Pretvaranje wantedNamea u lowercase
+    char wantedLower[MAX_NAME];
+    strcpy(wantedLower, wantedName);
+    toLowerStr(wantedLower);
+
     while (b != NULL)
     {
-        //Provjera za datum unutar intervala [fromDate, toDate]
         if (strcmp(b->date, fromDate) >= 0 && strcmp(b->date, toDate) <= 0)
         {
             Product *p = b->products;
             while (p != NULL)
             {
-                if (strcmp(p->name, wantedName) == 0)
+                char productLower[MAX_NAME];
+                strcpy(productLower, p->name);
+                toLowerStr(productLower);
+
+                if (strcmp(productLower, wantedLower) == 0)
                 {
                     totalAmount += p->amount;
                     totalMoney += p->amount * p->price;
                 }
+
                 p = p->next;
             }
         }
@@ -215,6 +230,7 @@ void queryProduct(Bill *head)
         printf("Ukupno potroseno: %.2f\n", totalMoney);
     }
 }
+
 
 void insertProductSorted(Bill *bill, Product *p)
 {
