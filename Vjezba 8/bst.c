@@ -19,6 +19,8 @@ Node* bst_insert(Node* root, int x) {
         root->left = bst_insert(root->left, x);
     else if (x > root->value)
         root->right = bst_insert(root->right, x);
+    /* duplikate ignoriramo */
+
     return root;
 }
 
@@ -42,7 +44,6 @@ Node* bst_delete(Node* root, int x) {
     } else if (x > root->value) {
         root->right = bst_delete(root->right, x);
     } else {
-
         if (!root->left && !root->right) {
             free(root);
             return NULL;
@@ -62,6 +63,17 @@ Node* bst_delete(Node* root, int x) {
         root->value = succ->value;
         root->right = bst_delete(root->right, succ->value);
     }
+    return root;
+}
+
+Node* bst_insert9(Node* root, int x) {
+    if (!root) return create_node(x);
+
+    if (x >= root->value)      /* veći ili jednak -> LIJEVO */
+        root->left = bst_insert9(root->left, x);
+    else                       /* manji -> DESNO */
+        root->right = bst_insert9(root->right, x);
+
     return root;
 }
 
@@ -96,13 +108,8 @@ typedef struct {
     QNode* back;
 } Queue;
 
-static void q_init(Queue* q) { 
-    q->front = q->back = NULL; 
-}
-
-static int q_empty(Queue* q) { 
-    return q->front == NULL; 
-}
+static void q_init(Queue* q) { q->front = q->back = NULL; }
+static int  q_empty(Queue* q) { return q->front == NULL; }
 
 static void q_push(Queue* q, Node* n) {
     QNode* x = (QNode*)malloc(sizeof(QNode));
@@ -137,6 +144,29 @@ void bst_levelorder(Node* root) {
         if (cur->left)  q_push(&q, cur->left);
         if (cur->right) q_push(&q, cur->right);
     }
+}
+
+void bst_inorder_to_file(Node* root, FILE* f) {
+    if (!root || !f) return;
+    bst_inorder_to_file(root->left, f);
+    fprintf(f, "%d ", root->value);
+    bst_inorder_to_file(root->right, f);
+}
+
+static int replace_rec(Node* node) {
+    if (!node) return 0;
+
+    int leftSum  = replace_rec(node->left);
+    int rightSum = replace_rec(node->right);
+
+    int old = node->value;
+    node->value = leftSum + rightSum;      
+
+    return leftSum + rightSum + old;       
+}
+
+void bst_replace_sum_desc(Node* root) {
+    (void)replace_rec(root);
 }
 
 void bst_free(Node* root) {
