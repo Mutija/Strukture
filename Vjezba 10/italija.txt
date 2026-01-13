@@ -1,0 +1,4 @@
+Rim, 2837332
+Napulj, 920000
+Torino, 886000
+Milano, 1400000
