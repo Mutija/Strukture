@@ -1,0 +1,5 @@
+Zagreb, 779145
+Split, 320000
+Zadar, 70829
+Osijek, 108048
+Rijeka, 108622

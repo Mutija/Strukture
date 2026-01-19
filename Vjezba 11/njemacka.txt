@@ -1,0 +1,4 @@
+Berlin, 3897000
+Dortmund, 590940
+Munchen, 1500000
+Stuttgart, 636000
